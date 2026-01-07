@@ -142,7 +142,7 @@ class PGVectorManager:
             filter_dict: Filtros de metadata opcionales
         """
         # Retornar un wrapper que permite usar similarity_search
-        return SimpleRetriever(self, k=k, filter_dict=filter_dict)
+        return SimpleRetriever(manager=self, k=k, filter_dict=filter_dict)
     
     def test_connection(self) -> bool:
         """Prueba la conexión a la base de datos."""
