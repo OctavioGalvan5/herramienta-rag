@@ -1,0 +1,39 @@
+{
+    "meta": {
+        "instanceId": "n8n-rag-tool-python"
+    },
+    "nodes": [
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "={{ $vars.RAG_API_URL || 'http://localhost:5001' }}/api/rag/query",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"query\": \"{{ $json.chat_input }}\",\n  \"top_k\": 5,\n  \"mode\": \"full\"\n}",
+                "options": {
+                    "timeout": 60000
+                }
+            },
+            "id": "python-rag-query",
+            "name": "🐍 Python RAG",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                2600,
+                480
+            ],
+            "notesInFlow": true,
+            "notes": "Llama al RAG de Python con FlashRank + Multi-Query.\nConecta a la MISMA base de datos PGVector de n8n."
+        }
+    ],
+    "connections": {}
+}

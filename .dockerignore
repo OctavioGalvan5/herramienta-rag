@@ -1,0 +1,9 @@
+# Ignorar archivos innecesarios
+__pycache__/
+*.pyc
+*.pyo
+.env.example
+.git/
+.gitignore
+*.md
+.vscode/

@@ -1,0 +1,25 @@
+# n8n RAG Tool - Dependencies
+# ============================
+
+# Flask API
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# LangChain Core
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langchain-postgres>=0.0.12
+langchain-community>=0.3.0
+
+# PostgreSQL/PGVector
+psycopg2-binary>=2.9.0
+pgvector>=0.3.0
+
+# Embeddings
+openai>=1.50.0
+
+# FlashRank (Reranking rápido local)
+flashrank>=0.2.0
+
+# Utils
+python-dotenv>=1.0.0
