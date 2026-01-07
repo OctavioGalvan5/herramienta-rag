@@ -204,8 +204,8 @@ def get_advanced_retriever(top_k: int = 5, use_rerank: bool = True, use_multi_qu
     debug_print("CHAIN", f"Opciones: rerank={use_rerank}, multi_query={use_multi_query}, top_k={top_k}")
     
     # Recuperar más docs inicialmente para filtrar después
-    # Aumentamos a 50 para dar más opciones al Reranker (calidad similar a Cohere)
-    initial_k = 50 if use_rerank else top_k
+    # Ajustamos a 30 para balancear velocidad/calidad (50 era muy lento en CPU)
+    initial_k = 30 if use_rerank else top_k
     
     # 1. Base Retriever (PGVector)
     base_retriever = vectorstore_manager.get_retriever(k=initial_k)
@@ -215,8 +215,8 @@ def get_advanced_retriever(top_k: int = 5, use_rerank: bool = True, use_multi_qu
     
     # 2. Multi-Query Retriever (opcional)
     if use_multi_query and MULTI_QUERY_AVAILABLE:
-        # Usar modelo rápido para generar queries alternativas
-        helper_llm = ChatOpenAI(temperature=0, model_name="gpt-5.1")
+        # Usar modelo rápido para generar queries alternativas (gpt-5.1 es overkill y lento aquí)
+        helper_llm = ChatOpenAI(temperature=0, model_name="gpt-4o-mini")
         
         multi_query_retriever = MultiQueryRetriever.from_llm(
             retriever=current_retriever,
