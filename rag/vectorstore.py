@@ -8,6 +8,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
+from langchain_core.retrievers import BaseRetriever
 from config.settings import Config
 from typing import List, Optional
 import json
@@ -158,21 +159,24 @@ class PGVectorManager:
             return False
 
 
-class SimpleRetriever:
-    """Wrapper simple para compatibilidad con LangChain."""
+class SimpleRetriever(BaseRetriever):
+    """Wrapper simple para compatibilidad con LangChain BaseRetriever."""
     
-    def __init__(self, manager: PGVectorManager, k: int = 5, filter_dict: Optional[dict] = None):
-        self.manager = manager
-        self.k = k
-        self.filter_dict = filter_dict
+    manager: PGVectorManager
+    k: int = 5
+    filter_dict: Optional[dict] = None
     
-    def invoke(self, query: str) -> List[Document]:
-        """Ejecutar búsqueda."""
+    class Config:
+        arbitrary_types_allowed = True
+    
+    def _get_relevant_documents(
+        self, 
+        query: str, 
+        *, 
+        run_manager = None
+    ) -> List[Document]:
+        """Implementación requerida por BaseRetriever."""
         return self.manager.similarity_search(query, k=self.k, filter_dict=self.filter_dict)
-    
-    def get_relevant_documents(self, query: str) -> List[Document]:
-        """Método legacy de LangChain."""
-        return self.invoke(query)
 
 
 # Singleton instance
